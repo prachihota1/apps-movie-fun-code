@@ -1,5 +1,6 @@
 package org.superbiz.moviefun;
 
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -25,6 +26,11 @@ public class Application {
     }
 
     @Bean
+    ServiceCredentials serviceCredentials(@Value("${vcap.services}") String vcapServices) {
+        return new ServiceCredentials(vcapServices);
+    }
+
+    @Bean
     public BlobStore blobStore(
             ServiceCredentials serviceCredentials,
             @Value("${vcap.services.photo-storage.credentials.endpoint:#{null}}") String endpoint
@@ -41,9 +47,5 @@ public class Application {
         }
 
         return new S3Store(s3Client, photoStorageBucket);
-    }
-    @Bean
-    ServiceCredentials serviceCredentials(@Value("${vcap.services}") String vcapServices) {
-        return new ServiceCredentials(vcapServices);
     }
 }
