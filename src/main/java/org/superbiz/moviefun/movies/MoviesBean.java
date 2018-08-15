@@ -31,9 +31,10 @@ import java.util.List;
 @Repository
 public class MoviesBean {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @PersistenceContext
     private EntityManager entityManager;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Movie find(Long id) {
         return entityManager.find(Movie.class, id);
@@ -41,7 +42,7 @@ public class MoviesBean {
 
     @Transactional
     public void addMovie(Movie movie) {
-        logger.debug("Creating movie with title , and year", movie.getTitle(),movie.getYear());
+        logger.debug("Creating movie with title {}, and year {}", movie.getTitle(), movie.getYear());
 
         entityManager.persist(movie);
     }
